@@ -48,6 +48,7 @@ public class PackerApplication {
                     int itemWeight = (int)(Double.valueOf(values[1]) * INTEGER_MULTIPLIER);
                     int price = Integer.valueOf(values[2]);
 
+                    //Check input values per item
                     if (price > MAX_PRICE) {
                         throw new APIException("Item price can not be more than 100: " + price);
                     }
@@ -59,6 +60,7 @@ public class PackerApplication {
                     Item item = new Item(index, itemWeight, price);
                     itemList.add(item);
                 }
+                //Check input values per line
                 if (itemList.size() > MAX_ITEM_NUMBER) {
                     throw new APIException("Number of item can not be more than 15: " + itemList.size());
                 }

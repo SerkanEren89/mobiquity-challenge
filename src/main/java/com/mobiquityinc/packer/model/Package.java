@@ -51,6 +51,7 @@ public class Package {
             }
         }
 
+        //Printing result
         String result =
                 indexes.stream()
                         .mapToInt(i -> i)
