@@ -11,6 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PackerApplication {
+
+    private static final int INTEGER_MULTIPLIER = 100;
+    private static final int MAX_PRICE = 100;
+    private static final int MAX_ITEM_NUMBER = 15;
+    private static final int MAX_ITEM_WEIGHT = 10000;
+    private static final int MAX_PACKAGE_WEIGHT = 10000;
+
     public static void main(String[] args) throws APIException {
 
         String absolutePath = "/Users/serkaneren/testData/data";
@@ -26,7 +33,7 @@ public class PackerApplication {
             while (line != null) {
                 Package pack;
                 String[] splitted = line.split(":");
-                int maxWeight = Integer.valueOf(splitted[0].trim()) * 100;
+                int maxWeight = Integer.valueOf(splitted[0].trim()) * INTEGER_MULTIPLIER;
                 List<Item> itemList = new ArrayList<>();
 
                 String replace = splitted[1].trim()
@@ -38,25 +45,25 @@ public class PackerApplication {
                 for (String itemStr : itemArr) {
                     String[] values = itemStr.split(",");
                     Integer index = Integer.valueOf(values[0]);
-                    int itemWeight = (int)(Double.valueOf(values[1]) * 100);
+                    int itemWeight = (int)(Double.valueOf(values[1]) * INTEGER_MULTIPLIER);
                     int price = Integer.valueOf(values[2]);
 
-                    if (price > 100) {
+                    if (price > MAX_PRICE) {
                         throw new APIException("Item price can not be more than 100: " + price);
                     }
 
-                    if (itemWeight > 10000) {
+                    if (itemWeight > MAX_ITEM_WEIGHT) {
                         throw new APIException("Item weight can not be more than 100: " + itemWeight);
                     }
 
                     Item item = new Item(index, itemWeight, price);
                     itemList.add(item);
                 }
-                if (itemList.size() > 15) {
+                if (itemList.size() > MAX_ITEM_NUMBER) {
                     throw new APIException("Number of item can not be more than 15: " + itemList.size());
                 }
 
-                if (maxWeight > 10000){
+                if (maxWeight > MAX_PACKAGE_WEIGHT){
                     throw new APIException("Package can not be more than 100: " + maxWeight);
                 }
 
@@ -67,7 +74,7 @@ public class PackerApplication {
             }
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new APIException("Exception during parsing");
         }
         return stringBuilder.toString();
     }
